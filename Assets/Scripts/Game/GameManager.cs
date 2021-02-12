@@ -17,7 +17,15 @@ public class GameManager : MonoBehaviourSingleton<GameManager> {
 	public Side CurrentTurnSide => game.CurrentTurnSide;
 	public Timeline<HalfMove> HalfMoveTimeline => game.HalfMoveTimeline;
 	public int HalfMoveCount => game.LatestHalfMoveIndex;
-	public List<Piece> CurrentPieces {
+
+	private bool random = false;
+
+	public void ToggleRandom()
+    {
+		random = !random;
+    }
+
+    public List<Piece> CurrentPieces {
 		get {
 			currentPiecesBacking.Clear();
 			for (int file = 1; file <= 8; file++)
@@ -58,7 +66,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager> {
 	public void StartNewGame(int mode) => StartNewGame((Mode) mode); // NOTE Used for binding to UnityEvent response, probably a cleaner way...
 
 	public void StartNewGame(Mode mode) {
-		game = new Game(mode, GameConditions.NormalStartingConditions);
+		game = new Game(mode, GameConditions.NormalStartingConditions, random);
 		NewGameStarted?.Invoke();
 	}
 
