@@ -12,6 +12,13 @@ public class GameManager : MonoBehaviourSingleton<GameManager> {
 	public event Action GameEnded;
 	public event Action GameResetToHalfMove;
 	public event Action MoveExecuted;
+
+	private bool random = false;
+
+	public void Switch()
+    {
+		random = !random;
+    }
 	
 	public Board CurrentBoard => game.BoardTimeline.Current;
 	public Side CurrentTurnSide => game.CurrentTurnSide;
@@ -58,7 +65,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager> {
 	public void StartNewGame(int mode) => StartNewGame((Mode) mode); // NOTE Used for binding to UnityEvent response, probably a cleaner way...
 
 	public void StartNewGame(Mode mode) {
-		game = new Game(mode, GameConditions.NormalStartingConditions);
+		game = new Game(mode, GameConditions.NormalStartingConditions, random);
 		NewGameStarted?.Invoke();
 	}
 
