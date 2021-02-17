@@ -17,7 +17,10 @@ public class GameManager : MonoBehaviourSingleton<GameManager> {
 	public Side CurrentTurnSide => game.CurrentTurnSide;
 	public Timeline<HalfMove> HalfMoveTimeline => game.HalfMoveTimeline;
 	public int HalfMoveCount => game.LatestHalfMoveIndex;
-	public List<Piece> CurrentPieces {
+
+    public bool rando { get; set; }
+
+    public List<Piece> CurrentPieces {
 		get {
 			currentPiecesBacking.Clear();
 			for (int file = 1; file <= 8; file++)
@@ -55,10 +58,10 @@ public class GameManager : MonoBehaviourSingleton<GameManager> {
 	public void EnqueueValidMove(Movement move) => moveQueue.Enqueue(move);
 	public string ExportToFEN() => fenInterchanger.Export(game);
 	public string ExportToPGN() => pgnInterchanger.Export(game);
-	public void StartNewGame(int mode) => StartNewGame((Mode) mode); // NOTE Used for binding to UnityEvent response, probably a cleaner way...
+	public void StartNewGame(int mode) => StartNewGame((Mode) mode, rando); // NOTE Used for binding to UnityEvent response, probably a cleaner way...
 
-	public void StartNewGame(Mode mode) {
-		game = new Game(mode, GameConditions.NormalStartingConditions);
+	public void StartNewGame(Mode mode, bool random = false) {
+		game = new Game(mode, GameConditions.NormalStartingConditions, random);
 		NewGameStarted?.Invoke();
 	}
 
